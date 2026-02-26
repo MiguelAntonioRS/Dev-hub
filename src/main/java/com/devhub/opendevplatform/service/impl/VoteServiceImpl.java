@@ -19,6 +19,7 @@ public class VoteServiceImpl implements VoteService {
     public Vote voteResource(User user, Resource resource, int value) {
 
         Optional<Vote> existingVote = voteRepository.findByUserAndResource(user, resource);
+
         if (existingVote.isPresent()) {
             Vote vote = existingVote.get();
             vote.setValue(value);
