@@ -23,7 +23,5 @@ public class Vote {
     @ManyToOne
     private Resource resource;
 
-    private int value; // +1 o -1
-
-    // getters y setters
+    private int value;
 }

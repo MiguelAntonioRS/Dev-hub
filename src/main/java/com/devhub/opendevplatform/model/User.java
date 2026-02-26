@@ -18,9 +18,10 @@ public class User {
     private Long id;
 
     private String username;
-    private String email;
-    private String password;
-    private int reputation = 0;
 
-    // getters y setters
+    private String email;
+
+    private String password;
+
+    private int reputation = 0;
 }

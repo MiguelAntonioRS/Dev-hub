@@ -18,13 +18,13 @@ public class Resource {
     private Long id;
 
     private String title;
+
     private String description;
+
     private String link;
 
     @ManyToOne
     private User author;
 
     private int votes = 0;
-
-    // getters y setters
 }
