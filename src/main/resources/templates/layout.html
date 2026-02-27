@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(content)">
+<head>
+    <meta charset="UTF-8">
+    <title>OpenDev Platform</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<!-- Header -->
+<header>
+    <nav>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/users/login}">Login</a></li>
+            <li><a th:href="@{/users/register}">Register</a></li>
+            <li><a th:href="@{/resources}">Resources</a></li>
+            <li><a th:href="@{/resources/add}">Add Resource</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Main content -->
+<main>
+    <div th:insert="${content}"></div>
+</main>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2026 OpenDev Platform - All rights reserved</p>
+</footer>
+
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>
