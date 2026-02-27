@@ -4,21 +4,12 @@
 <section class="resources-container">
     <h2>Available Resources</h2>
 
-    <!-- If no resources -->
-    <div th:if="${#lists.isEmpty(resources)}">
-        <p>No resources available yet. Be the first to add one!</p>
-    </div>
-
-    <!-- List resources -->
     <div th:each="resource : ${resources}" class="resource-card">
         <h3 th:text="${resource.title}">Resource Title</h3>
         <p th:text="${resource.description}">Resource description goes here...</p>
         <p><strong>Author:</strong> <span th:text="${resource.author}">Author Name</span></p>
-
-        <!-- Votes count -->
         <p><strong>Votes:</strong> <span th:text="${resource.votes}">0</span></p>
 
-        <!-- Voting buttons only if logged in -->
         <div sec:authorize="isAuthenticated()">
             <form th:action="@{'/votes/' + ${resource.id} + '/upvote'}" method="post">
                 <button type="submit" class="btn">Upvote</button>
@@ -29,10 +20,10 @@
         </div>
     </div>
 
-    <!-- Add resource button -->
     <div sec:authorize="isAuthenticated()" class="add-resource-link">
         <a th:href="@{/resources/add}" class="btn">Add New Resource</a>
     </div>
 </section>
+
 </body>
 </html>
