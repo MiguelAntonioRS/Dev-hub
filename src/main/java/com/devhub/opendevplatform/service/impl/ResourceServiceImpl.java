@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ResourceServiceImpl implements ResourceService {
@@ -27,5 +28,9 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public List<Resource> listAll() {
         return resourceRepository.findAll();
+    }
+
+    @Override public Optional<Resource> findById(Long id) {
+        return resourceRepository.findById(id);
     }
 }
