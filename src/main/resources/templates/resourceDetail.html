@@ -15,6 +15,11 @@
             <button type="submit" class="btn">Downvote</button>
         </form>
     </div>
+    <div sec:authorize="hasRole('ADMIN')">
+        <form th:action="@{'/resources/delete/' + ${resource.id}}" method="post">
+            <button type="submit" class="btn btn-danger">Delete Resource</button>
+        </form>
+    </div>
 
     <a th:href="@{/resources}" class="btn">Back to Resources</a>
 </section>
