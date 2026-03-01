@@ -17,9 +17,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void registerUser(User user) {
+    public User registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        user.setRole("USER"); // por defecto
+        return userRepository.save(user);
     }
 
     @Override
