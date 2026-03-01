@@ -33,4 +33,10 @@ public class ResourceServiceImpl implements ResourceService {
     @Override public Optional<Resource> findById(Long id) {
         return resourceRepository.findById(id);
     }
+
+    @Override
+    public Resource getResourceById(Long id) {
+        return resourceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Resource not found with id " + id));
+    }
 }
