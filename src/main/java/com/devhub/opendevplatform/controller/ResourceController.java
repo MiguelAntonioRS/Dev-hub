@@ -5,10 +5,7 @@ import com.devhub.opendevplatform.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/resources")
@@ -34,4 +31,13 @@ public class ResourceController {
         resourceService.addResource(resource);
         return "redirect:/resources";
     }
+
+    @GetMapping("/{id}")
+    public String getResourceDetail(@PathVariable Long id, Model model) {
+        Resource resource = resourceService.getResourceById(id);
+        model.addAttribute("resource", resource);
+        return "resourceDetail";
+    }
+
+
 }
