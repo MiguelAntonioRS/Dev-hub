@@ -21,6 +21,11 @@
         <div class="resource-actions">
             <a th:href="@{'/resources/' + ${resource.id}}" class="btn">View Details</a>
         </div>
+        <div sec:authorize="hasRole('ADMIN')">
+            <form th:action="@{'/resources/delete/' + ${resource.id}}" method="post">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
     </div>
 
     <div sec:authorize="isAuthenticated()" class="add-resource-link">
