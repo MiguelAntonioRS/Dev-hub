@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::body})}">
 <body>
+<section class="resource-detail">
+    <h2 th:text="${resource.title}">Resource Title</h2>
+    <p th:text="${resource.description}">Resource description</p>
+    <p><strong>Author:</strong> <span th:text="${resource.author}">Author</span></p>
+    <p><strong>Votes:</strong> <span th:text="${resource.votes}">0</span></p>
 
+    <div sec:authorize="isAuthenticated()">
+        <form th:action="@{'/votes/' + ${resource.id} + '/upvote'}" method="post">
+            <button type="submit" class="btn">Upvote</button>
+        </form>
+        <form th:action="@{'/votes/' + ${resource.id} + '/downvote'}" method="post">
+            <button type="submit" class="btn">Downvote</button>
+        </form>
+    </div>
+
+    <a th:href="@{/resources}" class="btn">Back to Resources</a>
+</section>
 </body>
 </html>
