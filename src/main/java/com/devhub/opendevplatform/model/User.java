@@ -25,6 +25,8 @@ public class User {
 
     private int reputation = 0;
 
+    private String role;
+
     public Long getId() {
         return id;
     }
@@ -63,5 +65,13 @@ public class User {
 
     public void setReputation(int reputation) {
         this.reputation = reputation;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
