@@ -7,7 +7,7 @@ import java.util.Optional;
 @Service
 public interface UserService {
 
-    void registerUser(User user);
+    User registerUser(User user);
 
     Optional<User> findByEmail(String email);
 
