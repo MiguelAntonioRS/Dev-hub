@@ -155,3 +155,17 @@ footer {
     border-radius: 6px;
     cursor: pointer;
 }
+
+.nav-link {
+    background: none;
+    border: none;
+    color: white; /* mismo color que los demás enlaces */
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+}
