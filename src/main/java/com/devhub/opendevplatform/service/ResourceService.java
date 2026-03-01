@@ -15,4 +15,6 @@ public interface ResourceService {
     List<Resource> listAll();
 
     Optional<Resource> findById(Long id);
+
+    Resource getResourceById(Long id);
 }
