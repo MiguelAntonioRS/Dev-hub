@@ -15,6 +15,8 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/users/register", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/resources/add", "/resources/delete/**").hasRole("ROLE_ADMIN")
+                        .requestMatchers("/resources/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
@@ -30,6 +32,7 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
