@@ -5,6 +5,7 @@
     <h2 th:text="${resource.title}">Resource Title</h2>
     <p th:text="${resource.description}">Resource description</p>
     <p><strong>Author:</strong> <span th:text="${resource.author}">Author</span></p>
+    <p><strong>Category:</strong> <span th:text="${resource.category}">Category</span></p>
     <p><strong>Votes:</strong> <span th:text="${resource.votes}">0</span></p>
 
     <div sec:authorize="isAuthenticated()">
@@ -15,6 +16,7 @@
             <button type="submit" class="btn">Downvote</button>
         </form>
     </div>
+
     <div sec:authorize="hasRole('ADMIN')">
         <form th:action="@{'/resources/delete/' + ${resource.id}}" method="post">
             <button type="submit" class="btn btn-danger">Delete Resource</button>
