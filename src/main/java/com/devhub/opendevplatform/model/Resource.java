@@ -27,6 +27,10 @@ public class Resource {
 
     private String category;
 
+    private String language;
+
+    private String framework;
+
     private int votes = 0;
 
     public Long getId() {
