@@ -25,6 +25,8 @@ public class Resource {
 
     private String author;
 
+    private String category;
+
     private int votes = 0;
 
     public Long getId() {
