@@ -76,4 +76,12 @@ public class Resource {
     public void setVotes(int votes) {
         this.votes = votes;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }
