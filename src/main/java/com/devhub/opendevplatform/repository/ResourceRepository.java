@@ -9,4 +9,6 @@ import java.util.List;
 public interface ResourceRepository extends JpaRepository<Resource, Long> {
 
     List<Resource> findByTitleContainingIgnoreCase(String keyword);
+
+    List<Resource> findByCategory(String category);
 }
