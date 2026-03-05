@@ -39,5 +39,16 @@ public class ResourceController {
         return "resourceDetail";
     }
 
+    @GetMapping("/resources")
+    public String listResources(@RequestParam(required = false) String category, Model model) {
 
+        List<Resource> resources;
+        if (category != null && !category.isEmpty()) {
+            resources = resourceRepository.findByCategory(category);
+        } else {
+            resources = resourceRepository.findAll();
+        }
+        model.addAttribute("resources", resources);
+        return "resources";
+    }
 }
