@@ -2,6 +2,7 @@ package com.devhub.opendevplatform.controller;
 
 import com.devhub.opendevplatform.model.Resource;
 import com.devhub.opendevplatform.repository.ResourceRepository;
+import com.devhub.opendevplatform.repository.VoteRepository;
 import com.devhub.opendevplatform.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,9 @@ public class ResourceController {
 
     @Autowired
     private ResourceRepository resourceRepository;
+
+    @Autowired
+    private VoteRepository voteRepository;
 
     @GetMapping
     public String listResources(Model model) {
@@ -57,4 +61,14 @@ public class ResourceController {
         model.addAttribute("resources", resources);
         return "resources";
     }
+
+    @PostMapping("/delete/{id}")
+    public String deleteResource(@PathVariable Long id) {
+
+        voteRepository.deleteByResourceId(id);
+
+        resourceRepository.deleteById(id);
+        return "redirect:/resources";
+    }
+
 }
