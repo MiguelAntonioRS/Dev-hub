@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface VoteRepository extends JpaRepository<Vote, Long> {
 
     Optional<Vote> findByUserAndResource(User user, Resource resource);
+
+    void deleteByResourceId(Long resourceId);
 }
