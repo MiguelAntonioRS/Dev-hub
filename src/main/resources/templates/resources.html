@@ -4,6 +4,19 @@
 <section class="resources-container">
     <h2>Available Resources</h2>
 
+    <form th:action="@{/resources}" method="get" class="filter-form">
+        <label for="category">Filter by Category:</label>
+        <select id="category" name="category">
+            <option value="">All</option>
+            <option value="Lenguaje">Lenguaje</option>
+            <option value="Framework">Framework</option>
+            <option value="Frontend">Frontend</option>
+            <option value="DevOps">DevOps</option>
+            <option value="Database">Database</option>
+        </select>
+        <button type="submit" class="btn">Filter</button>
+    </form>
+
     <div th:each="resource : ${resources}" class="resource-card">
         <h3 th:text="${resource.title}">Resource Title</h3>
         <p th:text="${resource.description}">Resource description goes here...</p>
