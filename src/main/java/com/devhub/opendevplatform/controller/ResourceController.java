@@ -29,6 +29,7 @@ public class ResourceController {
         model.addAttribute("resources", resourceService.listAll());
         return "resources";
     }
+
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("resource", new Resource());
