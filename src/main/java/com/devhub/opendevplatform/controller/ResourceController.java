@@ -24,7 +24,6 @@ public class ResourceController {
     @Autowired
     private VoteRepository voteRepository;
 
-
     @GetMapping
     public String listResources(Model model) {
         model.addAttribute("resources", resourceService.listAll());
