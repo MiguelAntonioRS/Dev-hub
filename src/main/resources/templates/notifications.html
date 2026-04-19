@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - OpenDev Platform</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <nav>
+        <a href="/" class="brand">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            OpenDev
+        </a>
+        <ul>
+            <li><a th:href="@{/resources}">Resources</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
+            <li><a th:href="@{/profile}">Profile</a></li>
+            <li><form th:action="@{/logout}" method="post" style="display:inline;"><button type="submit" class="nav-link">Logout</button></form></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <div class="notifications-header">
+        <h1>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            Notifications
+        </h1>
+        <span th:if="${unreadCount > 0}" class="badge" th:text="${unreadCount} + ' unread'">0 unread</span>
+    </div>
+
+    <div th:if="${notifications.empty}" class="empty-state">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+        <h3>No notifications yet</h3>
+        <p>You'll see activity on your resources here.</p>
+    </div>
+
+    <div class="notifications-list" th:if="${!notifications.empty}">
+        <div th:each="notification : ${notifications}" 
+             class="notification-item" 
+             th:classappend="${!notification.isRead() ? 'unread' : ''}">
+            <div class="notification-icon" th:classappend="${notification.type}">
+                <svg th:if="${notification.type == 'vote'}" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11a3 3 0 0 0 3-3v-4"></path>
+                </svg>
+                <svg th:if="${notification.type == 'comment'}" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <svg th:if="${notification.type == 'resource'}" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+            </div>
+            <div class="notification-content">
+                <p th:text="${notification.message}">Notification message</p>
+                <small th:text="${#temporals.format(notification.createdAt, 'dd MMM yyyy HH:mm')}">Date</small>
+            </div>
+            <a th:href="@{'/resources/' + ${notification.referenceId}}" class="btn btn-secondary">View</a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2026 OpenDev Platform</p>
+</footer>
+<script>function toggleTheme(){const h=document.documentElement,i=document.getElementById('theme-icon');h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');localStorage.setItem('theme',h.getAttribute('data-theme'));i.innerHTML=h.getAttribute('data-theme')==='dark'?'<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line>':'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>'}if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+</body>
+</html>
