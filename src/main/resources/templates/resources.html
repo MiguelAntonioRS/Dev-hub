@@ -1,53 +1,203 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::body})}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources - OpenDev Platform</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
 <body>
-<section class="resources-container">
-    <h2>Available Resources</h2>
+<header>
+    <nav>
+        <a href="/" class="brand">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            OpenDev
+        </a>
+        <ul>
+            <li><a th:href="@{/resources}" class="active">Resources</a></li>
+            <li><button class="theme-toggle" onclick="toggleTheme()">
+                <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button></li>
+            <li sec:authorize="isAnonymous()"><a th:href="@{/users/login}">Login</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/favorites}">Favorites</a></li>
+            <li sec:authorize="isAuthenticated()" class="user-menu">
+                <button class="user-dropdown-btn">
+                    <span class="user-avatar-small" sec:authentication="name">U</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="user-dropdown">
+                    <div class="user-dropdown-header">
+                        <span class="user-avatar-small" sec:authentication="name">U</span>
+                        <div>
+                            <strong sec:authentication="name">User</strong>
+                            <small sec:authentication="name">email@example.com</small>
+                        </div>
+                    </div>
+                    <a th:href="@{/dashboard}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        My Dashboard
+                    </a>
+                    <a th:href="@{/profile}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        Edit Profile
+                    </a>
+                    <a th:href="@{/notifications}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        Notifications
+                    </a>
+                    <a th:href="@{/resources/add}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Add Resource
+                    </a>
+                    <a th:href="@{/favorites}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        Favorites
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="logout-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                            Logout
+                        </button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</header>
 
-    <form th:action="@{/resources}" method="get" class="filter-form">
-        <label for="category">Filter by Category:</label>
-        <select id="category" name="category">
-            <option value="">All</option>
-            <option value="Lenguaje">Lenguaje</option>
-            <option value="Framework">Framework</option>
-            <option value="Frontend">Frontend</option>
-            <option value="DevOps">DevOps</option>
-            <option value="Database">Database</option>
-        </select>
-        <button type="submit" class="btn">Filter</button>
-    </form>
+<main class="container">
+    <div class="page-header">
+        <h1>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            Community Resources
+        </h1>
+        <p>Discover and share developer resources validated by the community</p>
+    </div>
 
-    <div th:each="resource : ${resources}" class="resource-card">
-        <h3 th:text="${resource.title}">Resource Title</h3>
-        <p th:text="${resource.description}">Resource description goes here...</p>
-        <p><strong>Author:</strong> <span th:text="${resource.author}">Author Name</span></p>
-        <p><strong>Category:</strong> <span th:text="${resource.category}">Category</span></p>
-        <p><strong>Votes:</strong> <span th:text="${resource.votes}">0</span></p>
+    <div class="search-bar">
+        <form th:action="@{/resources}" method="get">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <input type="text" name="q" th:value="${searchQuery}" placeholder="Search tutorials, libraries, tools..." />
+            <button type="submit" class="btn">Search</button>
+        </form>
+    </div>
 
-        <div sec:authorize="isAuthenticated()">
-            <form th:action="@{'/votes/' + ${resource.id} + '/upvote'}" method="post">
-                <button type="submit" class="btn">Upvote</button>
-            </form>
-            <form th:action="@{'/votes/' + ${resource.id} + '/downvote'}" method="post">
-                <button type="submit" class="btn">Downvote</button>
-            </form>
-        </div>
+    <div class="filter-bar">
+        <form th:action="@{/resources}" method="get" style="display:inline;">
+            <select name="category">
+                <option value="">All Categories</option>
+                <option value="Lenguaje">Lenguaje</option>
+                <option value="Framework">Framework</option>
+                <option value="Frontend">Frontend</option>
+                <option value="DevOps">DevOps</option>
+                <option value="Database">Database</option>
+                <option value="Tool">Tool</option>
+            </select>
+            <button type="submit" class="btn btn-secondary">Filter</button>
+        </form>
+        
+        <form th:action="@{/resources}" method="get" style="display:inline;">
+            <input type="hidden" name="sort" value="top"/>
+            <button type="submit" class="btn btn-secondary">Top Voted</button>
+        </form>
+        
+        <form th:action="@{/resources}" method="get" style="display:inline;">
+            <input type="hidden" name="sort" value="recent"/>
+            <button type="submit" class="btn btn-secondary">Recent</button>
+        </form>
+    </div>
 
-        <div class="resource-actions">
-            <a th:href="@{'/resources/' + ${resource.id}}" class="btn">View Details</a>
-        </div>
+    <div th:if="${searchQuery}" class="search-results">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <span>Results for: <strong th:text="${searchQuery}"></strong></span>
+        <a th:href="@{/resources}" class="clear-search">Clear</a>
+    </div>
 
-        <div sec:authorize="hasRole('ADMIN')">
-            <form th:action="@{'/resources/delete/' + ${resource.id}}" method="post">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
+    <div class="resources-grid">
+        <div th:each="resource : ${resources}" class="resource-card">
+            <div class="card-category" th:text="${resource.category}">Category</div>
+            <h3 th:text="${resource.title}">Resource Title</h3>
+            <p class="description" th:text="${resource.description}">Resource description goes here...</p>
+            <div class="meta">
+                <span class="meta-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span th:text="${resource.author}">Author</span>
+                </span>
+                <span class="meta-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11a3 3 0 0 0 3-3v-4"></path></svg>
+                    <span th:text="${resource.votes}">0</span> votes
+                </span>
+                <span class="meta-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <span th:text="${#temporals.format(resource.createdAt, 'dd MMM')}">-</span>
+                </span>
+            </div>
+            <div class="resource-actions">
+                <a th:href="@{'/resources/' + ${resource.id}}" class="btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    View Details
+                </a>
+            </div>
         </div>
     </div>
 
-    <div sec:authorize="hasRole('ADMIN')" class="add-resource-link">
-        <a th:href="@{/resources/add}" class="btn">Add New Resource</a>
+    <div th:if="${resources.empty}" class="empty-state">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+        </svg>
+        <h3>No resources found</h3>
+        <p>Be the first to share a resource with the community!</p>
     </div>
-</section>
+
+    <div sec:authorize="isAuthenticated()" class="add-resource-link">
+        <a th:href="@{/resources/add}" class="btn btn-success">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add New Resource
+        </a>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2026 OpenDev Platform</p>
+</footer>
+
+<script>
+function toggleTheme() {
+    const html = document.documentElement;
+    const icon = document.getElementById('theme-icon');
+    
+    if (html.getAttribute('data-theme') === 'dark') {
+        html.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+        icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+    } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+    }
+}
+
+const saved = localStorage.getItem('theme');
+if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+}
+</script>
 </body>
 </html>
