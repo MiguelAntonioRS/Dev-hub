@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(content)">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>OpenDev Platform</title>
@@ -10,24 +10,26 @@
 <header>
     <nav>
         <ul>
+            <li><a th:href="@{/resources}">Resources</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/dashboard}">My Dashboard</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/resources/add}">Add Resource</a></li>
             <li sec:authorize="isAnonymous()"><a th:href="@{/users/login}">Login</a></li>
             <li sec:authorize="isAnonymous()"><a th:href="@{/users/register}">Register</a></li>
+            <li sec:authorize="isAuthenticated()">
+                <span sec:authentication="name">User</span>
+            </li>
             <li sec:authorize="isAuthenticated()">
                 <form th:action="@{/logout}" method="post" style="display:inline;">
                     <button type="submit" class="nav-link">Logout</button>
                 </form>
             </li>
-            <li><a th:href="@{/resources}">Resources</a></li>
-            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/resources/add}">Add Resource</a></li>
         </ul>
-
-
     </nav>
 </header>
 
 <!-- Main content -->
 <main>
-    <div th:insert="${content}"></div>
+    <th:block th:replace="${content}"></th:block>
 </main>
 
 <!-- Footer -->
