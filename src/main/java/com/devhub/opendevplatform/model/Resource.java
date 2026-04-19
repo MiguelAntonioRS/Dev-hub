@@ -1,15 +1,10 @@
 package com.devhub.opendevplatform.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
 @Entity
 @Table(name = "resources")
 public class Resource {
@@ -19,6 +14,7 @@ public class Resource {
 
     private String title;
 
+    @Column(length = 2000)
     private String description;
 
     private String link;
@@ -27,7 +23,39 @@ public class Resource {
 
     private String category;
 
+    private String type;
+
+    @ManyToMany
+    @JoinTable(
+        name = "resource_tags",
+        joinColumns = @JoinColumn(name = "resource_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tags = new ArrayList<>();
+
     private int votes = 0;
+
+    @Enumerated(EnumType.STRING)
+    private ResourceStatus status = ResourceStatus.PENDING;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    public enum ResourceStatus {
+        PENDING, APPROVED, REJECTED
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 
     public Long getId() {
         return id;
@@ -84,4 +112,19 @@ public class Resource {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+
+    public ResourceStatus getStatus() { return status; }
+    public void setStatus(ResourceStatus status) { this.status = status; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public List<Tag> getTags() { return tags; }
+    public void setTags(List<Tag> tags) { this.tags = tags; }
 }
