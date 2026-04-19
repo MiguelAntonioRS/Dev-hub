@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${status} + ' - ' + ${error}">Error</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <nav>
+        <a href="/" class="brand">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            OpenDev
+        </a>
+        <ul>
+            <li><a th:href="@{/resources}">Resources</a></li>
+            <li><a th:href="@{/users/login}">Login</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container error-container">
+    <div class="error-code" th:text="${status}">404</div>
+    <h1 th:text="${error}">Page Not Found</h1>
+    <p class="error-message" th:text="${message}">The page you're looking for doesn't exist.</p>
+    
+    <div style="margin-top: 2rem;">
+        <a th:href="@{/}" class="btn">Go Home</a>
+        <a th:href="@{/resources}" class="btn btn-secondary">Browse Resources</a>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2026 OpenDev Platform</p>
+</footer>
+</body>
+</html>
