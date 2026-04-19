@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - OpenDev Platform</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <nav>
+        <a href="/" class="brand">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            OpenDev
+        </a>
+        <ul>
+            <li><a th:href="@{/resources}">Resources</a></li>
+            <li><button class="theme-toggle" onclick="toggleTheme()"><svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button></li>
+            <li><a th:href="@{/dashboard}" class="active">Dashboard</a></li>
+            <li><a th:href="@{/profile}">Profile</a></li>
+            <li><a th:href="@{/favorites}">Favorites</a></li>
+            <li class="user-menu">
+                <button class="user-dropdown-btn">
+                    <span class="user-avatar-small" sec:authentication="name">U</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="user-dropdown">
+                    <div class="user-dropdown-header">
+                        <span class="user-avatar-small" sec:authentication="name">U</span>
+                        <div><strong sec:authentication="name">User</strong></div>
+                    </div>
+                    <form th:action="@{/logout}" method="post"><button type="submit" class="logout-btn">Logout</button></form>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <div class="dashboard-header">
+        <div class="user-profile">
+            <div class="avatar-large">
+                <span th:text="${#strings.substring(user.username, 0, 1)}">U</span>
+            </div>
+            <div class="user-info">
+                <h1>Welcome, <span th:text="${user.username}">User</span>!</h1>
+                <p th:text="${user.email}">email@example.com</p>
+                <div class="user-badges">
+                    <span class="badge" th:text="${user.role}">USER</span>
+                    <span class="badge badge-success">⭐ <span th:text="${user.reputation}">0</span> reputation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <h4>My Resources</h4>
+            <span class="value" th:text="${resourcesCount}">0</span>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">👍</div>
+            <h4>Votes Given</h4>
+            <span class="value" th:text="${votesCount}">0</span>
+        </div>
+    </div>
+    
+    <div class="dashboard-section">
+        <h2>My Resources</h2>
+        <div th:if="${myResources.empty}" class="empty-state">
+            <p>You haven't submitted any resources yet.</p>
+            <a th:href="@{/resources/add}" class="btn btn-success">Add Your First Resource</a>
+        </div>
+        <div class="resources-grid" th:if="${!myResources.empty}">
+            <div th:each="resource : ${myResources}" class="resource-card">
+                <div class="card-category" th:text="${resource.category}">Category</div>
+                <h3 th:text="${resource.title}">Title</h3>
+                <p class="description" th:text="${resource.description}">Description</p>
+                <div class="meta">
+                    <span>👍 <span th:text="${resource.votes}">0</span></span>
+                </div>
+                <div class="resource-actions">
+                    <a th:href="@{'/resources/' + ${resource.id}}" class="btn">View</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2026 OpenDev Platform</p>
+</footer>
+<script>function toggleTheme(){const h=document.documentElement,i=document.getElementById('theme-icon');h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');localStorage.setItem('theme',h.getAttribute('data-theme'));i.innerHTML=h.getAttribute('data-theme')==='dark'?'<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line>':'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>'}if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+</body>
+</html>
