@@ -1,10 +1,17 @@
 package com.devhub.opendevplatform.controller;
 
 import com.devhub.opendevplatform.model.Resource;
+import com.devhub.opendevplatform.model.Resource.ResourceStatus;
 import com.devhub.opendevplatform.repository.ResourceRepository;
 import com.devhub.opendevplatform.repository.VoteRepository;
 import com.devhub.opendevplatform.service.ResourceService;
+import com.devhub.opendevplatform.service.CommentService;
+import com.devhub.opendevplatform.model.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +31,46 @@ public class ResourceController {
     @Autowired
     private VoteRepository voteRepository;
 
+    @Autowired
+    private CommentService commentService;
+
     @GetMapping
-    public String listResources(Model model) {
-        model.addAttribute("resources", resourceService.listAll());
+    public String listResources(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String q,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,
+            Model model) {
+        
+        Pageable pageable = PageRequest.of(page, size, Sort.by("votes").descending());
+        Page<Resource> resourcePage;
+        
+        if (q != null && !q.isEmpty()) {
+            List<Resource> resources = resourceService.search(q);
+            model.addAttribute("searchQuery", q);
+            model.addAttribute("resources", resources);
+            model.addAttribute("totalPages", 0);
+            model.addAttribute("currentPage", 0);
+            return "resources";
+        } else if ("recent".equals(sort)) {
+            pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+            resourcePage = resourceService.findAllPageable(pageable);
+        } else if (category != null && !category.isEmpty()) {
+            List<Resource> resources = resourceService.findByCategory(category);
+            model.addAttribute("resources", resources);
+            model.addAttribute("totalPages", 0);
+            model.addAttribute("currentPage", 0);
+            return "resources";
+        } else {
+            resourcePage = resourceService.findAllPageable(pageable);
+        }
+        
+        model.addAttribute("resources", resourcePage.getContent());
+        model.addAttribute("totalPages", resourcePage.getTotalPages());
+        model.addAttribute("currentPage", resourcePage.getNumber());
+        model.addAttribute("currentCategory", category);
+        model.addAttribute("currentSort", sort);
         return "resources";
     }
 
@@ -38,37 +82,36 @@ public class ResourceController {
 
     @PostMapping("/add")
     public String addResource(@ModelAttribute Resource resource) {
+        resource.setStatus(ResourceStatus.PENDING);
         resourceService.addResource(resource);
-        return "redirect:/resources";
+        return "redirect:/resources?pending=true";
     }
 
     @GetMapping("/{id}")
     public String getResourceDetail(@PathVariable Long id, Model model) {
         Resource resource = resourceService.getResourceById(id);
+        List<Comment> comments = commentService.getCommentsByResource(id);
         model.addAttribute("resource", resource);
+        model.addAttribute("comments", comments);
         return "resourceDetail";
     }
 
-    @GetMapping("/resources")
-    public String listResources(@RequestParam(required = false) String category, Model model) {
+    @PostMapping("/approve/{id}")
+    public String approveResource(@PathVariable Long id) {
+        resourceService.updateStatus(id, ResourceStatus.APPROVED);
+        return "redirect:/admin/resources";
+    }
 
-        List<Resource> resources;
-        if (category != null && !category.isEmpty()) {
-            resources = resourceRepository.findByCategory(category);
-        } else {
-            resources = resourceRepository.findAll();
-        }
-        model.addAttribute("resources", resources);
-        return "resources";
+    @PostMapping("/reject/{id}")
+    public String rejectResource(@PathVariable Long id) {
+        resourceService.updateStatus(id, ResourceStatus.REJECTED);
+        return "redirect:/admin/resources";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteResource(@PathVariable Long id) {
-
         voteRepository.deleteByResourceId(id);
-
         resourceRepository.deleteById(id);
         return "redirect:/resources";
     }
-
 }
