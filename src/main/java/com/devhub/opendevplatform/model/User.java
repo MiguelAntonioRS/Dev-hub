@@ -1,15 +1,7 @@
 package com.devhub.opendevplatform.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
 @Entity
 @Table(name = "users")
 public class User {
@@ -27,51 +19,42 @@ public class User {
 
     private String role;
 
-    public Long getId() {
-        return id;
-    }
+    @Column(length = 500)
+    private String bio;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private String avatar;
 
-    public String getUsername() {
-        return username;
-    }
+    private String github;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    private String twitter;
 
-    public String getEmail() {
-        return email;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 
-    public String getPassword() {
-        return password;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public int getReputation() {
-        return reputation;
-    }
+    public int getReputation() { return reputation; }
+    public void setReputation(int reputation) { this.reputation = reputation; }
 
-    public void setReputation(int reputation) {
-        this.reputation = reputation;
-    }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 
-    public String getRole() {
-        return role;
-    }
+    public String getBio() { return bio; }
+    public void setBio(String bio) { this.bio = bio; }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+    public String getAvatar() { return avatar; }
+    public void setAvatar(String avatar) { this.avatar = avatar; }
+
+    public String getGithub() { return github; }
+    public void setGithub(String github) { this.github = github; }
+
+    public String getTwitter() { return twitter; }
+    public void setTwitter(String twitter) { this.twitter = twitter; }
 }
