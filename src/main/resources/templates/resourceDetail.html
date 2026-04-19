@@ -1,29 +1,98 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::body})}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${resource.title} + ' - OpenDev Platform'">Resource - OpenDev Platform</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
 <body>
-<section class="resource-detail">
-    <h2 th:text="${resource.title}">Resource Title</h2>
-    <p th:text="${resource.description}">Resource description</p>
-    <p><strong>Author:</strong> <span th:text="${resource.author}">Author</span></p>
-    <p><strong>Category:</strong> <span th:text="${resource.category}">Category</span></p>
-    <p><strong>Votes:</strong> <span th:text="${resource.votes}">0</span></p>
+<header>
+    <nav>
+        <a href="/" class="brand">💻 OpenDev Platform</a>
+        <ul>
+            <li><a th:href="@{/resources}">Resources</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/dashboard}">Dashboard</a></li>
+            <li sec:authorize="isAuthenticated()"><form th:action="@{/logout}" method="post" style="display:inline;"><button type="submit" class="nav-link">Logout</button></form></li>
+            <li sec:authorize="isAnonymous()"><a th:href="@{/users/login}">Login</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <div sec:authorize="isAuthenticated()">
-        <form th:action="@{'/votes/' + ${resource.id} + '/upvote'}" method="post">
-            <button type="submit" class="btn">Upvote</button>
-        </form>
-        <form th:action="@{'/votes/' + ${resource.id} + '/downvote'}" method="post">
-            <button type="submit" class="btn">Downvote</button>
-        </form>
-    </div>
+<main class="container">
+    <a th:href="@{/resources}" class="btn btn-secondary">← Back to Resources</a>
+    
+    <article class="resource-detail">
+        <div class="resource-header">
+            <span class="category-tag" th:text="${resource.category}">Category</span>
+            <span class="type-tag" th:text="${resource.type}">Type</span>
+        </div>
+        
+        <h1 th:text="${resource.title}">Resource Title</h1>
+        
+        <div class="resource-meta">
+            <span>📝 By <strong th:text="${resource.author}">Author</strong></span>
+            <span>📅 <span th:text="${#temporals.format(resource.createdAt, 'dd MMM yyyy')}">Date</span></span>
+            <span>👍 <strong th:text="${resource.votes}">0</strong> votes</span>
+        </div>
+        
+        <p class="resource-description" th:text="${resource.description}">Resource description</p>
+        
+        <div class="resource-link" th:if="${resource.link}">
+            <a th:href="${resource.link}" target="_blank" class="btn btn-success">
+                🔗 Visit Resource →
+            </a>
+        </div>
+        
+        <div class="resource-actions" sec:authorize="isAuthenticated()">
+            <form th:action="@{'/votes/' + ${resource.id} + '/upvote'}" method="post" style="display:inline;">
+                <button type="submit" class="btn">👍 Upvote</button>
+            </form>
+            <form th:action="@{'/votes/' + ${resource.id} + '/downvote'}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-secondary">👎 Downvote</button>
+            </form>
+        </div>
+        
+        <div sec:authorize="hasRole('ADMIN')" class="admin-actions">
+            <form th:action="@{'/resources/delete/' + ${resource.id}}" method="post">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">🗑️ Delete Resource</button>
+            </form>
+        </div>
+    </article>
+    
+    <section class="comments-section">
+        <h3>💬 Comments (<span th:text="${#lists.size(comments)}">0</span>)</h3>
+        
+        <div th:if="${comments.empty}" class="empty-state">
+            <p>No comments yet. Be the first to comment!</p>
+        </div>
+        
+        <div th:each="comment : ${comments}" class="comment">
+            <div class="comment-header">
+                <strong th:text="${comment.user.username}">User</strong>
+                <small th:text="${#temporals.format(comment.createdAt, 'dd MMM yyyy HH:mm')}">Date</small>
+            </div>
+            <p th:text="${comment.content}">Comment content</p>
+        </div>
+        
+        <div sec:authorize="isAuthenticated()" class="add-comment-form">
+            <h4>Add a Comment</h4>
+            <form th:action="@{/comments/add}" method="post">
+                <input type="hidden" name="resourceId" th:value="${resource.id}"/>
+                <textarea name="content" placeholder="Share your thoughts..." required></textarea>
+                <button type="submit" class="btn btn-success">Post Comment</button>
+            </form>
+        </div>
+        
+        <div sec:authorize="isAnonymous()" class="login-prompt">
+            <p><a th:href="@{/users/login}">Login</a> to post a comment.</p>
+        </div>
+    </section>
+</main>
 
-    <div sec:authorize="hasRole('ADMIN')">
-        <form th:action="@{'/resources/delete/' + ${resource.id}}" method="post">
-            <button type="submit" class="btn btn-danger">Delete Resource</button>
-        </form>
-    </div>
-
-    <a th:href="@{/resources}" class="btn">Back to Resources</a>
-</section>
+<footer>
+    <p>&copy; 2026 OpenDev Platform</p>
+</footer>
+<script>function toggleTheme(){const h=document.documentElement,i=document.getElementById('theme-icon');h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');localStorage.setItem('theme',h.getAttribute('data-theme'));i.innerHTML=h.getAttribute('data-theme')==='dark'?'<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line>':'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>'}if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
 </body>
 </html>
