@@ -39,14 +39,18 @@ public class ResourceController {
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String q,
+            @RequestParam(required = false) String pending,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size,
             Model model) {
         
         Pageable pageable = PageRequest.of(page, size, Sort.by("votes").descending());
         Page<Resource> resourcePage;
-        
-        if (q != null && !q.isEmpty()) {
+
+        // If user wants to view pending resources
+        if (pending != null && pending.equals("true")) {
+            resourcePage = resourceService.findByStatusPageable(ResourceStatus.PENDING, pageable);
+        } else if (q != null && !q.isEmpty()) {
             List<Resource> resources = resourceService.search(q);
             model.addAttribute("searchQuery", q);
             model.addAttribute("resources", resources);
