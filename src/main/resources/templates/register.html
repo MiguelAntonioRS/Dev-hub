@@ -1,28 +1,120 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::body})}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras-spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - OpenDev Platform</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        /* Ensure dark mode readability on register */
+        html[data-theme="dark"] body,
+        html[data-theme="dark"] .auth-container,
+        html[data-theme="dark"] .auth-card,
+        html[data-theme="dark"] .auth-card input,
+        html[data-theme="dark"] .auth-card label,
+        html[data-theme="dark"] .auth-card p {
+            color: var(--text-primary) !important;
+        }
+        html[data-theme="dark"] .auth-card input::placeholder,
+        html[data-theme="dark"] .auth-card textarea::placeholder {
+            color: var(--text-secondary) !important;
+        }
+        html[data-theme="dark"] .auth-container a,
+        html[data-theme="dark"] .auth-card .links a {
+            color: var(--primary) !important;
+        }
+    </style>
+    <script>if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+</head>
 <body>
-<section class="form-container">
-    <h2>User Registration</h2>
-    <form th:action="@{/users/register}" th:object="${user}" method="post">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" th:field="*{username}" required />
+<header>
+    <nav>
+        <a href="/" class="brand">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            OpenDev
+        </a>
+        <ul>
+            <li><a th:href="@{/resources}">Browse</a></li>
+            <li><button class="theme-toggle" onclick="toggleTheme()"><svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button></li>
+            <li sec:authorize="isAuthenticated()" class="user-menu">
+                <button class="user-dropdown-btn">
+                    <span class="user-avatar-small" sec:authentication="name">U</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="user-dropdown">
+                    <div class="user-dropdown-header">
+                        <span class="user-avatar-small" sec:authentication="name">U</span>
+                        <div><strong sec:authentication="name">User</strong></div>
+                    </div>
+                    <a th:href="@{/dashboard}">Dashboard</a>
+                    <a th:href="@{/profile}">Edit Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <form th:action="@{/logout}" method="post"><button type="submit" class="logout-btn">Logout</button></form>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<main class="auth-container">
+    <div class="auth-card">
+        <div class="auth-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="8.5" cy="7" r="4"></circle>
+                <line x1="20" y1="8" x2="20" y2="14"></line>
+                <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
         </div>
+        <h2>Join the Community!</h2>
+        <p style="text-align: center; color: var(--secondary); margin-bottom: 1.5rem;">
+            Create an account to share and discover developer resources.
+        </p>
+        
+        <form th:action="@{/users/register}" th:object="${user}" method="post" class="form">
+            <div class="form-group">
+                <label for="username">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    Username
+                </label>
+                <input type="text" id="username" th:field="*{username}" placeholder=" Choose a username" required />
+            </div>
 
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" th:field="*{email}" required />
+            <div class="form-group">
+                <label for="email">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    Email
+                </label>
+                <input type="email" id="email" th:field="*{email}" placeholder=" your@email.com" required />
+            </div>
+
+            <div class="form-group">
+                <label for="password">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    Password
+                </label>
+                <input type="password" id="password" th:field="*{password}" placeholder=" Create a password" required />
+            </div>
+
+            <button type="submit" class="btn btn-success">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                Create Account
+            </button>
+        </form>
+        
+        <div class="links">
+            <p>Already have an account? <a th:href="@{/users/login}">Sign in</a></p>
         </div>
+    </div>
+</main>
 
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" th:field="*{password}" required />
-        </div>
-
-        <button type="submit" class="btn">Register</button>
-    </form>
-
-    <p>Already have an account? <a th:href="@{/users/login}">Login here</a></p>
-</section>
+<footer>
+    <p>&copy; 2026 OpenDev Platform</p>
+</footer>
+<script>function toggleTheme(){const h=document.documentElement,i=document.getElementById('theme-icon');h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');localStorage.setItem('theme',h.getAttribute('data-theme'));i.innerHTML=h.getAttribute('data-theme')==='dark'?'<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line>':'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>'}if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
 </body>
 </html>
