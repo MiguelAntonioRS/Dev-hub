@@ -86,9 +86,9 @@ public class ResourceController {
 
     @PostMapping("/add")
     public String addResource(@ModelAttribute Resource resource) {
-        resource.setStatus(ResourceStatus.PENDING);
+        resource.setStatus(ResourceStatus.APPROVED);
         resourceService.addResource(resource);
-        return "redirect:/resources?pending=true";
+        return "redirect:/resources";
     }
 
     @GetMapping("/{id}")
