@@ -424,6 +424,12 @@ header nav ul li a.active {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.container > * {
+    max-width: 100%;
 }
 
 /* Hero section */
@@ -615,6 +621,16 @@ header nav ul li a.active {
     box-shadow: var(--shadow);
     max-width: 600px;
     margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form input,
+.form textarea,
+.form select {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .form h2 {
@@ -625,6 +641,7 @@ header nav ul li a.active {
 
 .form-group {
     margin-bottom: 1.5rem;
+    width: 100%;
 }
 
 .form-group label {
