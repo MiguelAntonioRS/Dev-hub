@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <title>Add Resource - OpenDev Platform</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        html[data-theme="dark"] body,
+        html[data-theme="dark"] .form,
+        html[data-theme="dark"] .form-group label {
+            color: var(--text-primary) !important;
+        }
+        html[data-theme="dark"] .form input,
+        html[data-theme="dark"] .form textarea,
+        html[data-theme="dark"] .form select {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+    </style>
 </head>
 <body>
 <header>
