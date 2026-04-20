@@ -28,7 +28,7 @@
             <li sec:authorize="isAnonymous()"><a th:href="@{/users/login}">Login</a></li>
             <li sec:authorize="isAnonymous()"><a th:href="@{/users/register}" class="btn">Get Started</a></li>
             <li sec:authorize="isAuthenticated()" class="user-menu">
-                <button class="user-dropdown-btn">
+                <button class="user-dropdown-btn" tabindex="0">
                     <span class="user-avatar-small" sec:authentication="name">U</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
                 </button>
