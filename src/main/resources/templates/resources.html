@@ -129,7 +129,8 @@
         <a th:href="@{/resources}" class="clear-search">Clear</a>
     </div>
 
-    <div class="resources-grid">
+    <div class="resources-grid-section">
+        <div class="resources-grid">
         <div th:each="resource : ${resources}" class="resource-card">
             <div class="card-category" th:text="${resource.category}">Category</div>
             <h3 th:text="${resource.title}">Resource Title</h3>
@@ -166,9 +167,9 @@
         <h3>No resources found</h3>
         <p>Be the first to share a resource with the community!</p>
     </div>
-    
+
     <!-- Add New Resource CTA moved below resources grid -->
-    <div sec:authorize="isAuthenticated()" class="add-resource-link" style="margin-top: 2rem;">
+    <div class="add-resource-section" sec:authorize="isAuthenticated()">
         <a th:href="@{/resources/add}" class="btn btn-success">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             Add New Resource
