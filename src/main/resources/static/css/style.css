@@ -236,7 +236,75 @@ header nav ul li a.active {
     height: 20px;
 }
 
-/* Cards in dark mode */
+[// Cards in dark mode and grid improvements]
+[data-theme="dark"] .resource-card,
+[data-theme="dark"] .feature-card,
+[data-theme="dark"] .form,
+[data-theme="dark"] .auth-card,
+[data-theme="dark"] .dashboard-section,
+[data-theme="dark"] .profile-form,
+[data-theme="dark"] .search-bar,
+[data-theme="dark"] .auth-container {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+/* Resources grid and cards */
+.resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 0 16px;
+}
+
+.resource-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-secondary);
+    padding: 16px;
+    border-radius: 14px;
+    box-shadow: var(--shadow-lg);
+    min-height: 260px;
+}
+
+.resource-card .card-category {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 12px;
+}
+
+.resource-card h3 {
+    font-size: 1.05rem;
+    margin: 6px 0 8px 0;
+}
+
+.resource-card .description {
+    color: var(--text-secondary);
+    min-height: 60px;
+}
+
+.resource-card .meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 8px;
+    color: var(--text-secondary);
+}
+
+.resource-card .btn {
+    align-self: flex-start;
+    margin-top: auto;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+}
+
+.resource-card .btn:hover {
+    transform: translateY(-1px);
+}
 [data-theme="dark"] .resource-card,
 [data-theme="dark"] .feature-card,
 [data-theme="dark"] .form,
@@ -419,7 +487,27 @@ header nav ul li a.active {
     color: #a78bfa;
 }
 
-/* Main container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Resources page header accent */
+.page-header.accent-left {
+    border-left: 4px solid var(--primary);
+    padding-left: 12px;
+    margin-left: 8px;
+}
+
+/* Main container (ensure full width on cards) */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+}
 .container {
     max-width: 1200px;
     margin: 0 auto;
