@@ -14,14 +14,17 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/users/register", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/resources/add", "/resources/delete/**").hasRole("ADMIN")
-                        .requestMatchers("/resources/**").authenticated()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/", "/resources", "/resources/**", "/users/register", "/users/login", "/css/**", "/js/**", "/api/**", "/error").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/resources/add", "/dashboard/**", "/profile/**", "/notifications/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/votes/**").authenticated()
+                        .anyRequest().permitAll()
                 )
                 .formLogin(login -> login
-                        .loginPage("/users/login") // nuestra vista de login
-                        .defaultSuccessUrl("/", true) // redirige al home al loguearse
+                        .loginPage("/users/login")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/resources", true)
+                        .failureUrl("/users/login?error")
                         .permitAll()
                 )
                 .logout(logout -> logout
