@@ -157,8 +157,12 @@
             <div class="profile-row">
                 <div class="profile-col">
                     <div class="profile-avatar-big">
-                        <img th:if="${user.avatar != null and user.avatar != ''}" th:src="${user.avatar}" alt="Avatar"/>
-                        <span th:if="${user.avatar == null or user.avatar == ''}" th:text="${#strings.toUpperCase(#strings.substring(user.username, 0, 1))}">U</span>
+                        <th:block th:if="${user.avatar != null and user.avatar != ''}">
+                            <img th:src="${user.avatar}" alt="Avatar"/>
+                        </th:block>
+                        <th:block th:if="${user.avatar == null or user.avatar == ''}">
+                            <span th:text="${#strings.substring(user.username, 0, 1)}">?</span>
+                        </th:block>
                     </div>
                     <p><strong th:text="${user.username}">Username</strong></p>
                     <p style="color: var(--text-secondary);" th:text="${user.email}">email@example.com</p>
