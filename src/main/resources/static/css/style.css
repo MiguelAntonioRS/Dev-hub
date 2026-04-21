@@ -323,6 +323,9 @@ header nav ul li a.active {
     color: #ffffff !important;
 }
 
+/* Hide stray left navigation panels that appear on some pages (e.g., in home/resources) */
+.left-nav, aside.sidebar, nav.sidebar, .sidebar, .vertical-nav { display: none !important; }
+
 .resource-card .description {
     color: var(--text-secondary);
     min-height: 60px;
