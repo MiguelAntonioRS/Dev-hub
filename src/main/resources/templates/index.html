@@ -8,26 +8,8 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
 </head>
 <body>
-<header>
-    <nav>
-        <a href="/" class="brand">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                <line x1="8" y1="21" x2="16" y2="21"></line>
-                <line x1="12" y1="17" x2="12" y2="21"></line>
-            </svg>
-            OpenDev
-        </a>
-        <ul>
-            <li><a th:href="@{/resources}">Browse</a></li>
-            <li><button class="theme-toggle" onclick="toggleTheme()">
-                <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                </svg>
-            </button></li>
-            <li sec:authorize="isAnonymous()"><a th:href="@{/users/login}">Login</a></li>
-            <li sec:authorize="isAnonymous()"><a th:href="@{/users/register}" class="btn">Get Started</a></li>
-            <li sec:authorize="isAuthenticated()" class="user-menu">
+<th:block th:replace="~{fragments/header :: header}"></th:block>
+<script th:src="@{/js/dropdown.js}"></script>
                 <button class="user-dropdown-btn" tabindex="0">
                     <span class="user-avatar-small" sec:authentication="name">U</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
