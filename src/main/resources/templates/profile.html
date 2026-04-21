@@ -161,7 +161,7 @@
                             <img th:src="${user.avatar}" alt="Avatar"/>
                         </th:block>
                         <th:block th:if="${user.avatar == null or user.avatar == ''}">
-                            <span th:text="${#strings.substring(user.username, 0, 1)}">?</span>
+                            <span th:text="${userInitial}">?</span>
                         </th:block>
                     </div>
                     <p><strong th:text="${user.username}">Username</strong></p>
