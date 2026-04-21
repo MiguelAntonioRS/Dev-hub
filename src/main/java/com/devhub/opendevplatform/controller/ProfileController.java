@@ -26,15 +26,25 @@ public class ProfileController {
     @PostMapping
     public String updateProfile(
             Authentication authentication,
+            @RequestParam(required = false) String username,
             @RequestParam(required = false) String bio,
             @RequestParam(required = false) String github,
             @RequestParam(required = false) String twitter,
-            @RequestParam(required = false) String avatar) {
+            @RequestParam(required = false) String avatar,
+            Model model) {
         
-        String username = authentication.getName();
-        User user = userRepository.findByUsername(username).orElse(null);
+        String currentUsername = authentication.getName();
+        User user = userRepository.findByUsername(currentUsername).orElse(null);
         
         if (user != null) {
+            if (username != null && !username.equals(currentUsername)) {
+                if (userRepository.findByUsername(username).isPresent()) {
+                    model.addAttribute("error", "Username already taken");
+                    model.addAttribute("user", user);
+                    return "profile";
+                }
+                user.setUsername(username);
+            }
             if (bio != null) user.setBio(bio);
             if (github != null) user.setGithub(github);
             if (twitter != null) user.setTwitter(twitter);
