@@ -19,6 +19,12 @@ public class ProfileController {
     public String showProfile(Authentication authentication, Model model) {
         String username = authentication.getName();
         User user = userRepository.findByUsername(username).orElse(null);
+        if (user != null && user.getUsername() != null && !user.getUsername().isEmpty()) {
+            String initial = user.getUsername().substring(0, 1).toUpperCase();
+            model.addAttribute("userInitial", initial);
+        } else {
+            model.addAttribute("userInitial", "?");
+        }
         model.addAttribute("user", user);
         return "profile";
     }
