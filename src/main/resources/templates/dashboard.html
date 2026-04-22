@@ -25,12 +25,12 @@
             <li><a th:href="@{/favorites}">Favorites</a></li>
             <li class="user-menu">
                 <button class="user-dropdown-btn">
-                    <span class="user-avatar-small" sec:authentication="name">U</span>
+                    <span class="user-avatar-small" th:text="${userInitial}">U</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
                 </button>
                 <div class="user-dropdown">
                     <div class="user-dropdown-header">
-                        <span class="user-avatar-small" sec:authentication="name">U</span>
+                        <span class="user-avatar-small" th:text="${userInitial}">U</span>
                         <div><strong sec:authentication="name">User</strong></div>
                     </div>
                     <form th:action="@{/logout}" method="post"><button type="submit" class="logout-btn">Logout</button></form>
