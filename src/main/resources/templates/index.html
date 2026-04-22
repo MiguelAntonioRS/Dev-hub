@@ -29,12 +29,12 @@
             <li sec:authorize="isAnonymous()"><a th:href="@{/users/register}" class="btn">Get Started</a></li>
             <li sec:authorize="isAuthenticated()" class="user-menu">
                 <button class="user-dropdown-btn" tabindex="0">
-                    <span class="user-avatar-small" sec:authentication="name">U</span>
+                    <span class="user-avatar-small" th:text="${#strings.toUpperCase(#authentication.name.charAt(0))}">U</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
                 </button>
                 <div class="user-dropdown">
                     <div class="user-dropdown-header">
-                        <span class="user-avatar-small" sec:authentication="name">U</span>
+                        <span class="user-avatar-small" th:text="${#strings.toUpperCase(#authentication.name.charAt(0))}">U</span>
                         <div>
                             <strong sec:authentication="name">User</strong>
                         </div>
