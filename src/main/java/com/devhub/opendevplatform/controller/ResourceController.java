@@ -3,11 +3,14 @@ package com.devhub.opendevplatform.controller;
 import com.devhub.opendevplatform.model.Resource;
 import com.devhub.opendevplatform.model.Resource.ResourceStatus;
 import com.devhub.opendevplatform.repository.ResourceRepository;
+import com.devhub.opendevplatform.repository.UserRepository;
 import com.devhub.opendevplatform.repository.VoteRepository;
 import com.devhub.opendevplatform.service.ResourceService;
 import com.devhub.opendevplatform.service.CommentService;
 import com.devhub.opendevplatform.model.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +36,9 @@ public class ResourceController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
     public String listResources(
@@ -97,6 +103,14 @@ public class ResourceController {
         List<Comment> comments = commentService.getCommentsByResource(id);
         model.addAttribute("resource", resource);
         model.addAttribute("comments", comments);
+        
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.getName() != null) {
+            var user = userRepository.findByUsername(auth.getName()).orElse(null);
+            if (user != null) {
+                model.addAttribute("currentUserId", user.getId());
+            }
+        }
         return "resourceDetail";
     }
 
