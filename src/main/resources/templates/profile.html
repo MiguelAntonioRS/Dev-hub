@@ -156,13 +156,9 @@
         <div class="profile-section">
             <div class="profile-row">
                 <div class="profile-col">
-                    <div class="profile-avatar-big">
-                        <th:block th:if="${user.avatar != null and user.avatar != ''}">
-                            <img th:src="${user.avatar}" alt="Avatar"/>
-                        </th:block>
-                        <th:block th:if="${user.avatar == null or user.avatar == ''}">
-                            <span th:text="${userInitial}">?</span>
-                        </th:block>
+                    <div class="profile-avatar-big" th:with="hasAvatar=${user.avatar != null and not #strings.isEmpty(user.avatar)}">
+                        <img th:if="${hasAvatar}" th:src="${user.avatar}" alt="Avatar"/>
+                        <span th:unless="${hasAvatar}" th:text="${userInitial != null ? userInitial : '?'}">?</span>
                     </div>
                     <p><strong th:text="${user.username}">Username</strong></p>
                     <p style="color: var(--text-secondary);" th:text="${user.email}">email@example.com</p>
