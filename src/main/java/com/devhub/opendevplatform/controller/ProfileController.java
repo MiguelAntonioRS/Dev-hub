@@ -7,6 +7,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Controller
 @RequestMapping("/profile")
@@ -14,6 +18,9 @@ public class ProfileController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @GetMapping
     public String showProfile(Authentication authentication, Model model) {
@@ -40,6 +47,7 @@ public class ProfileController {
         
         String currentUsername = authentication.getName();
         User user = userRepository.findByUsername(currentUsername).orElse(null);
+        boolean usernameChanged = false;
         
         if (user != null) {
             if (username != null && !username.equals(currentUsername)) {
@@ -49,6 +57,7 @@ public class ProfileController {
                     return "profile";
                 }
                 user.setUsername(username);
+                usernameChanged = true;
             }
             if (bio != null) user.setBio(bio);
             if (github != null) user.setGithub(github);
@@ -57,6 +66,12 @@ public class ProfileController {
             userRepository.save(user);
         }
         
+        if (usernameChanged) {
+            UserDetails newDetails = userDetailsService.loadUserByUsername(username);
+            UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
+                    newDetails, newDetails.getPassword(), newDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
+        }
         return "redirect:/profile?success=true";
     }
 }
