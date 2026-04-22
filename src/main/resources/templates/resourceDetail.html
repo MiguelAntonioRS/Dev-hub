@@ -24,8 +24,8 @@
     
     <article class="resource-detail">
         <div class="resource-header">
-            <span class="category-tag" th:text="${resource.category}">Category</span>
-            <span class="type-tag" th:text="${resource.type}">Type</span>
+            <span class="category-tag" th:text="${resource.category}" style="background:#7c3aed; color:#fff; padding:4px 12px; border-radius:20px; font-size:0.75rem;">Category</span>
+            <span class="type-tag" th:text="${resource.type}" style="background:#64748b; color:#fff; padding:4px 12px; border-radius:20px; font-size:0.75rem;">Type</span>
         </div>
         
         <h1 th:text="${resource.title}">Resource Title</h1>
@@ -60,32 +60,32 @@
         </div>
     </article>
     
-    <section class="comments-section">
-        <h3>💬 Comments (<span th:text="${#lists.size(comments)}">0</span>)</h3>
+    <section class="comments-section" style="max-width:100%; overflow:hidden;">
+        <h3 style="color:var(--text-primary);">💬 Comments (<span th:text="${#lists.size(comments)}">0</span>)</h3>
         
         <div th:if="${comments.empty}" class="empty-state">
             <p>No comments yet. Be the first to comment!</p>
         </div>
         
-        <div th:each="comment : ${comments}" class="comment">
-            <div class="comment-header">
-                <strong th:text="${comment.user.username}">User</strong>
-                <small th:text="${#temporals.format(comment.createdAt, 'dd MMM yyyy HH:mm')}">Date</small>
+        <div th:each="comment : ${comments}" class="comment" style="background:var(--bg-secondary); padding:1rem; border-radius:8px; margin-bottom:1rem; overflow:hidden;">
+            <div class="comment-header" style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
+                <strong th:text="${comment.user.username}" style="color:var(--primary);">User</strong>
+                <small th:text="${#temporals.format(comment.createdAt, 'dd MMM yyyy HH:mm')}" style="color:var(--text-secondary);">Date</small>
             </div>
-            <p th:text="${comment.content}">Comment content</p>
+            <p th:text="${comment.content}" style="color:var(--text-primary); word-wrap:break-word;">Comment content</p>
         </div>
         
-        <div sec:authorize="isAuthenticated()" class="add-comment-form">
-            <h4>Add a Comment</h4>
+        <div sec:authorize="isAuthenticated()" class="add-comment-form" style="margin-top:1.5rem;">
+            <h4 style="color:var(--text-primary);">Add a Comment</h4>
             <form th:action="@{/comments/add}" method="post">
                 <input type="hidden" name="resourceId" th:value="${resource.id}"/>
-                <textarea name="content" placeholder="Share your thoughts..." required></textarea>
-                <button type="submit" class="btn btn-success">Post Comment</button>
+                <textarea name="content" placeholder="Share your thoughts..." required style="width:100%; padding:0.75rem; border:2px solid var(--border-color); border-radius:8px; background:var(--bg-primary); color:var(--text-primary);"></textarea>
+                <button type="submit" class="btn btn-success" style="margin-top:0.5rem;">Post Comment</button>
             </form>
         </div>
         
         <div sec:authorize="isAnonymous()" class="login-prompt">
-            <p><a th:href="@{/users/login}">Login</a> to post a comment.</p>
+            <p><a th:href="@{/users/login}" style="color:var(--primary);">Login</a> to post a comment.</p>
         </div>
     </section>
 </main>
