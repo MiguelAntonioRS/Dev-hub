@@ -7,6 +7,7 @@ import com.devhub.opendevplatform.repository.ResourceRepository;
 import com.devhub.opendevplatform.repository.UserRepository;
 import com.devhub.opendevplatform.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,13 +26,13 @@ public class CommentController {
 
     @PostMapping("/add")
     public String addComment(@RequestParam Long resourceId,
-                              @RequestParam Long userId,
-                              @RequestParam String content) {
+                              @RequestParam String content,
+                              Authentication authentication) {
         Comment comment = new Comment();
         comment.setContent(content);
         
         resourceRepository.findById(resourceId).ifPresent(comment::setResource);
-        userRepository.findById(userId).ifPresent(comment::setUser);
+        userRepository.findByUsername(authentication.getName()).ifPresent(comment::setUser);
         
         commentService.addComment(comment);
         return "redirect:/resources/" + resourceId;
