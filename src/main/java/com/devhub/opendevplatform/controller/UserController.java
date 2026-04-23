@@ -9,9 +9,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @Controller
-@RequestMapping({"/users", "/u"})
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -28,25 +29,38 @@ public class UserController {
         if (!model.containsAttribute("user")) {
             model.addAttribute("user", new User());
         }
-        return "register";
+return "register";
     }
 
-    @PostMapping("/register")
-    public String registerUser(@ModelAttribute User user, Model model) {
-        try {
-            user.setRole("USER");
-            userService.registerUser(user);
-            return "redirect:/users/login?registered";
-        } catch (Exception e) {
-            model.addAttribute("error", "Username or email already exists");
-            model.addAttribute("user", user);
-            return "register";
+    @GetMapping("/community")
+    public String community(Authentication authentication, Model model) {
+        Iterable<User> allUsers = userRepository.findAll();
+        model.addAttribute("users", allUsers);
+        
+        if (authentication != null && !authentication.getName().isEmpty()) {
+            User currentUser = userRepository.findByUsername(authentication.getName()).orElse(null);
+            if (currentUser != null) {
+                model.addAttribute("currentUser", currentUser);
+                List<User> following = followService.getFollowing(currentUser);
+                model.addAttribute("followingUsers", following);
+            }
         }
+        
+        return "community";
     }
 
     @GetMapping("/login")
     public String showLoginForm() {
         return "login";
+    }
+
+    @GetMapping("/profile")
+    public String myProfile(Authentication authentication, Model model) {
+        User user = userRepository.findByUsername(authentication.getName()).orElse(null);
+        if (user != null) {
+            return "redirect:/users/" + user.getId();
+        }
+        return "redirect:/resources";
     }
 
     @GetMapping("/{userId}")
