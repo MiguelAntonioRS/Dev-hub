@@ -19,14 +19,15 @@
             OpenDev
         </a>
         <ul>
-            <li><a th:href="@{/resources}">Browse</a></li>
+            <li><a th:href="@{/resources}">Resources</a></li>
+            <li><a th:href="@{/community}">Community</a></li>
             <li><button class="theme-toggle" onclick="toggleTheme()">
                 <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
             </button></li>
-            <li sec:authorize="isAnonymous()"><a th:href="@{/users/login}">Login</a></li>
-            <li sec:authorize="isAnonymous()"><a th:href="@{/users/register}" class="btn">Get Started</a></li>
+            <li sec:authorize="isAnonymous()"><a th:href="@{/login}">Login</a></li>
+            <li sec:authorize="isAnonymous()"><a th:href="@{/register}" class="btn">Get Started</a></li>
             <li sec:authorize="isAuthenticated()" class="user-menu">
                 <button class="user-dropdown-btn" tabindex="0">
                     <span class="user-avatar-small" th:text="${userInitial}">U</span>
