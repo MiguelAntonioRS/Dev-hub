@@ -57,6 +57,7 @@ public class UserController {
         }
 
         model.addAttribute("profileUser", profileUser);
+        model.addAttribute("profileInitial", profileUser.getUsername().substring(0, 1).toUpperCase());
         model.addAttribute("followerCount", followService.getFollowerCount(profileUser));
         model.addAttribute("followingCount", followService.getFollowingCount(profileUser));
 
