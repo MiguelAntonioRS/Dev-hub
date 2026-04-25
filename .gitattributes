@@ -3,6 +3,6 @@
 src/main/resources/templates/dashboard.html linguist-generated=true
 src/main/resources/templates/index.html linguist-generated=true
 src/main/resources/templates/userProfile.html linguist-generated=true
-src/main/resources/templates/resources linguist-generated=true
-src/main/resources/templates/profile linguist-generated=true
+src/main/resources/templates/resources.html linguist-generated=true
+src/main/resources/templates/profile.html linguist-generated=true
 src/main/resources/templates/layout linguist-generated=true
