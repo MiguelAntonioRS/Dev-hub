@@ -1,2 +1,4 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
+src/main/resources/templates/dashboard linguist-generated=true
+src/main/resources/templates/index linguist-generated=true
