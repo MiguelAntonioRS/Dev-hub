@@ -1,8 +1,8 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
-src/main/resources/templates/dashboard linguist-generated=true
-src/main/resources/templates/index linguist-generated=true
-src/main/resources/templates/userProfile linguist-generated=true
+src/main/resources/templates/dashboard.html linguist-generated=true
+src/main/resources/templates/index.html linguist-generated=true
+src/main/resources/templates/userProfile.html linguist-generated=true
 src/main/resources/templates/resources linguist-generated=true
 src/main/resources/templates/profile linguist-generated=true
 src/main/resources/templates/layout linguist-generated=true
