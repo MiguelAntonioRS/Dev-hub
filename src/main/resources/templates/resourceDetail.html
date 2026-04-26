@@ -51,6 +51,13 @@
             <form th:action="@{'/votes/' + ${resource.id} + '/downvote'}" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-secondary">👎 Downvote</button>
             </form>
+            
+            <div style="margin-top:1rem;">
+                <span>Rate: </span>
+                <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                    <a th:href="@{'/ratings/' + ${resource.id}(stars=${i})}" style="color:#fbbf24; font-size:1.25rem;">★</a>
+                </th:block>
+            </div>
         </div>
         
         <div sec:authorize="hasRole('ADMIN')" class="admin-actions">
