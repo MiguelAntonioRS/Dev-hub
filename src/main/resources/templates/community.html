@@ -30,7 +30,6 @@
             <li><a href="/community">Community</a></li>
             <li sec:authorize="isAuthenticated()"><a href="/dashboard">Dashboard</a></li>
             <li sec:authorize="isAuthenticated()"><a href="/profile">Profile</a></li>
-            <li sec:authorize="isAuthenticated()"><form th:action="@{/logout}" method="post"><button type="submit" class="nav-link">Logout</button></form></li>
             <li sec:authorize="isAnonymous()"><a href="/users/login">Login</a></li>
         </ul>
     </nav>
