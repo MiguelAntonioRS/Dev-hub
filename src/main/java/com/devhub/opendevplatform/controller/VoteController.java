@@ -32,8 +32,8 @@ public class VoteController {
                          @AuthenticationPrincipal CustomUserDetails userDetails) {
         User user = userDetails.getUser();
         Resource resource = resourceService.findById(resourceId).orElseThrow();
-        voteService.voteResource(user, resource, 1);
-        return "redirect:/resources";
+voteService.voteResource(user, resource, 1);
+        return "redirect:/resources/" + resourceId;
     }
 
     @PostMapping("/{resourceId}/downvote")
@@ -42,7 +42,7 @@ public class VoteController {
         User user = userDetails.getUser();
         Resource resource = resourceService.findById(resourceId).orElseThrow();
         voteService.voteResource(user, resource, -1);
-        return "redirect:/resources";
+        return "redirect:/resources/" + resourceId;
     }
 
 }
