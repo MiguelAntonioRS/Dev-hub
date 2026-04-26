@@ -11,5 +11,4 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
     Optional<Rating> findByUserAndResource(User user, Resource resource);
     List<Rating> findByResource(Resource resource);
     List<Rating> findByUser(User user);
-    double avgByResource(Resource resource);
 }
