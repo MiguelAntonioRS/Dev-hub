@@ -7,6 +7,7 @@ import com.devhub.opendevplatform.repository.UserRepository;
 import com.devhub.opendevplatform.repository.VoteRepository;
 import com.devhub.opendevplatform.service.ResourceService;
 import com.devhub.opendevplatform.service.CommentService;
+import com.devhub.opendevplatform.service.RatingService;
 import com.devhub.opendevplatform.model.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -36,6 +37,9 @@ public class ResourceController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private RatingService ratingService;
 
     @Autowired
     private UserRepository userRepository;
@@ -103,12 +107,14 @@ public class ResourceController {
         List<Comment> comments = commentService.getCommentsByResource(id);
         model.addAttribute("resource", resource);
         model.addAttribute("comments", comments);
+        model.addAttribute("averageRating", ratingService.getAverageRating(resource));
         
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.getName() != null) {
             var user = userRepository.findByUsername(auth.getName()).orElse(null);
             if (user != null) {
                 model.addAttribute("currentUserId", user.getId());
+                model.addAttribute("userRating", ratingService.getUserRating(user, resource));
             }
         }
         return "resourceDetail";
