@@ -34,6 +34,7 @@
             <span>📝 By <strong th:text="${resource.author}">Author</strong></span>
             <span>📅 <span th:text="${#temporals.format(resource.createdAt, 'dd MMM yyyy')}">Date</span></span>
             <span>👍 <strong th:text="${resource.votes}">0</strong> votes</span>
+            <span th:if="${averageRating > 0}">⭐ <strong th:text="${#numbers.formatDecimal(averageRating, 1, 1)}">0</strong>/5 (<span th:text="${userRating}">0</span> tu rating)</span>
         </div>
         
         <p class="resource-description" th:text="${resource.description}">Resource description</p>
@@ -56,7 +57,8 @@
                 <span>Rate: </span>
                 <th:block th:each="i : ${#numbers.sequence(1, 5)}">
                     <form th:action="@{'/ratings/' + ${resource.id}(stars=${i})}" method="post" style="display:inline;">
-                        <button type="submit" style="background:none;border:none;color:#fbbf24;font-size:1.25rem;cursor:pointer;">★</button>
+                        <button type="submit" 
+                                th:style="${userRating >= i} ? 'background:none;border:none;color:#fbbf24;font-size:1.5rem;cursor:pointer;' : 'background:none;border:none;color:#4b5563;font-size:1.5rem;cursor:pointer;'">★</button>
                     </form>
                 </th:block>
             </div>
