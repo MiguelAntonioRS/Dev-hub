@@ -23,7 +23,7 @@ public class RatingService {
         ratingRepository.save(rating);
     }
 
-    public double getAverageRating(Resource resource) {
+public double getAverageRating(Resource resource) {
         List<Rating> ratings = ratingRepository.findByResource(resource);
         if (ratings.isEmpty()) return 0;
         return ratings.stream().mapToInt(Rating::getStars).average().orElse(0);
