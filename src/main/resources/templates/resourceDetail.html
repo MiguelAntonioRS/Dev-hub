@@ -55,7 +55,9 @@
             <div style="margin-top:1rem;">
                 <span>Rate: </span>
                 <th:block th:each="i : ${#numbers.sequence(1, 5)}">
-                    <a th:href="@{'/ratings/' + ${resource.id}(stars=${i})}" style="color:#fbbf24; font-size:1.25rem;">★</a>
+                    <form th:action="@{'/ratings/' + ${resource.id}(stars=${i})}" method="post" style="display:inline;">
+                        <button type="submit" style="background:none;border:none;color:#fbbf24;font-size:1.25rem;cursor:pointer;">★</button>
+                    </form>
                 </th:block>
             </div>
         </div>
