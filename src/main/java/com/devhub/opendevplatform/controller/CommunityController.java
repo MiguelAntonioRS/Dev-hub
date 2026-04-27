@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -38,13 +39,19 @@ public class CommunityController {
         model.addAttribute("totalPages", userPage.getTotalPages());
         model.addAttribute("currentPage", userPage.getNumber());
         
-        if (authentication != null && !authentication.getName().isEmpty()) {
-            User currentUser = userRepository.findByUsername(authentication.getName()).orElse(null);
-            if (currentUser != null) {
-                model.addAttribute("currentUser", currentUser);
-                List<User> following = followService.getFollowing(currentUser);
-                model.addAttribute("followingUsers", following);
+        if (authentication != null && authentication.getName() != null) {
+            try {
+                User currentUser = userRepository.findByUsername(authentication.getName()).orElse(null);
+                if (currentUser != null) {
+                    model.addAttribute("currentUser", currentUser);
+                    List<User> following = followService.getFollowing(currentUser);
+                    model.addAttribute("followingUsers", following);
+                }
+            } catch (Exception e) {
+                model.addAttribute("followingUsers", Collections.emptyList());
             }
+        } else {
+            model.addAttribute("followingUsers", Collections.emptyList());
         }
         
         return "community";
