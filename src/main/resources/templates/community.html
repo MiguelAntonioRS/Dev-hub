@@ -59,6 +59,14 @@
             </div>
         </div>
     </div>
+
+    <div th:if="${totalPages > 1}" class="pagination">
+        <a th:href="@{/community(page=${currentPage - 1})}" th:class="${currentPage == 0} ? 'disabled'">&laquo; Prev</a>
+        <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/community(page=${i})}" th:text="${i + 1}" th:class="${i == currentPage} ? 'active'"></a>
+        </span>
+        <a th:href="@{/community(page=${currentPage + 1})}" th:class="${currentPage >= totalPages - 1} ? 'disabled'">Next &raquo;</a>
+    </div>
 </main>
 
 <footer style="text-align:center; padding: 2rem; color: var(--text-secondary); margin-top: 2rem;">
