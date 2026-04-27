@@ -46,12 +46,12 @@
             <p th:text="${user.bio}" style="color: var(--text-secondary); font-size: 0.875rem;">Bio</p>
             
             <div style="margin-top: 1rem;">
-                <span th:if="${followingUsers.contains(user)}">
+                <span th:if="${followingUsers != null && followingUsers.contains(user)}">
                     <form th:action="@{'/follow/' + ${user.id} + '/unfollow'}" method="post">
                         <button type="submit" class="btn btn-secondary">Following</button>
                     </form>
                 </span>
-                <span th:unless="${followingUsers.contains(user)}">
+                <span th:unless="${followingUsers != null && followingUsers.contains(user)}">
                     <form th:if="${currentUser?.id != user.id}" th:action="@{'/follow/' + ${user.id}}" method="post">
                         <button type="submit" class="btn">Follow</button>
                     </form>
