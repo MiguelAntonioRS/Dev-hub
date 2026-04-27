@@ -28,6 +28,9 @@ public class CommentController {
     public String addComment(@RequestParam Long resourceId,
                               @RequestParam String content,
                               Authentication authentication) {
+        if (authentication == null) {
+            return "redirect:/users/login";
+        }
         Comment comment = new Comment();
         comment.setContent(content);
         
