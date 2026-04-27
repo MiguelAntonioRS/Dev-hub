@@ -174,6 +174,20 @@
             Add New Resource
         </a>
     </div>
+
+    <div th:if="${totalPages > 1}" class="pagination">
+        <a th:href="@{/resources(page=${currentPage - 1}, category=${currentCategory}, sort=${currentSort}, q=${searchQuery})}" 
+           th:class="${currentPage == 0} ? 'disabled'" class="btn btn-secondary">&laquo; Prev</a>
+        
+        <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/resources(page=${i}, category=${currentCategory}, sort=${currentSort}, q=${searchQuery})}"
+               th:text="${i + 1}"
+               th:class="${i == currentPage} ? 'active' : ''"></a>
+        </span>
+        
+        <a th:href="@{/resources(page=${currentPage + 1}, category=${currentCategory}, sort=${currentSort}, q=${searchQuery})}"
+           th:class="${currentPage >= totalPages - 1} ? 'disabled'" class="btn btn-secondary">Next &raquo;</a>
+    </div>
 </main>
 
 <footer>
