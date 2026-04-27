@@ -20,6 +20,9 @@ public class FollowController {
 
     @PostMapping("/{userId}")
     public String followUser(@PathVariable Long userId, Authentication authentication) {
+        if (authentication == null) {
+            return "redirect:/users/login";
+        }
         User follower = userRepository.findByUsername(authentication.getName()).orElse(null);
         User target = userRepository.findById(userId).orElse(null);
         
@@ -31,6 +34,9 @@ public class FollowController {
 
     @PostMapping("/{userId}/unfollow")
     public String unfollowUser(@PathVariable Long userId, Authentication authentication) {
+        if (authentication == null) {
+            return "redirect:/users/login";
+        }
         User follower = userRepository.findByUsername(authentication.getName()).orElse(null);
         User target = userRepository.findById(userId).orElse(null);
         
