@@ -1599,3 +1599,40 @@ header nav ul li a.active {
 }
 [data-theme="dark"] .auth-card, [data-theme="dark"] .auth-card * { color: var(--text-primary) !important; }
 [data-theme="dark"] .auth-card .links a { color: var(--primary) !important; }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.pagination a {
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    transition: all 0.2s;
+}
+
+.pagination a:hover:not(.disabled):not(.active) {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
+.pagination a.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    font-weight: bold;
+}
+
+.pagination a.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
