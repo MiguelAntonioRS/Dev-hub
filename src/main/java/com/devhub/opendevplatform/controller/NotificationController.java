@@ -21,6 +21,9 @@ public class NotificationController {
 
     @GetMapping
     public String showNotifications(Authentication authentication, Model model) {
+        if (authentication == null) {
+            return "redirect:/users/login";
+        }
         String username = authentication.getName();
         User user = userRepository.findByUsername(username).orElse(null);
         
@@ -39,6 +42,9 @@ public class NotificationController {
 
     @PostMapping("/read-all")
     public String markAllAsRead(Authentication authentication) {
+        if (authentication == null) {
+            return "redirect:/users/login";
+        }
         String username = authentication.getName();
         User user = userRepository.findByUsername(username).orElse(null);
         if (user != null) {
