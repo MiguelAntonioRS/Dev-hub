@@ -21,6 +21,9 @@ public class FavoriteController {
 
     @PostMapping("/toggle/{resourceId}")
     public String toggleFavorite(Authentication authentication, @PathVariable Long resourceId) {
+        if (authentication == null) {
+            return "redirect:/users/login";
+        }
         String username = authentication.getName();
         User user = userRepository.findByUsername(username).orElse(null);
         
@@ -32,6 +35,9 @@ public class FavoriteController {
 
     @GetMapping
     public String myFavorites(Authentication authentication, Model model) {
+        if (authentication == null) {
+            return "redirect:/users/login";
+        }
         String username = authentication.getName();
         User user = userRepository.findByUsername(username).orElse(null);
         
