@@ -27,18 +27,24 @@ public class VoteController {
     @Autowired
     private ResourceService resourceService;
 
-    @PostMapping("/{resourceId}/upvote")
+@PostMapping("/{resourceId}/upvote")
     public String upvote(@PathVariable Long resourceId,
                          @AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails == null) {
+            return "redirect:/users/login";
+        }
         User user = userDetails.getUser();
         Resource resource = resourceService.findById(resourceId).orElseThrow();
-voteService.voteResource(user, resource, 1);
+        voteService.voteResource(user, resource, 1);
         return "redirect:/resources/" + resourceId;
     }
 
     @PostMapping("/{resourceId}/downvote")
     public String downvote(@PathVariable Long resourceId,
                            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails == null) {
+            return "redirect:/users/login";
+        }
         User user = userDetails.getUser();
         Resource resource = resourceService.findById(resourceId).orElseThrow();
         voteService.voteResource(user, resource, -1);
