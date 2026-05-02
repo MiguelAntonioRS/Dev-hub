@@ -27,6 +27,9 @@ public class RatingController {
     public String rate(@PathVariable Long resourceId,
                      @RequestParam int stars,
                      Authentication authentication) {
+        if (authentication == null) {
+            return "redirect:/users/login";
+        }
         User user = userRepository.findByUsername(authentication.getName()).orElse(null);
         Resource resource = resourceRepository.findById(resourceId).orElse(null);
         
