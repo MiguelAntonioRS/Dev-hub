@@ -29,9 +29,21 @@ public class UserController {
         if (!model.containsAttribute("user")) {
             model.addAttribute("user", new User());
         }
-return "register";
+        return "register";
     }
 
+    @PostMapping("/register")
+    public String register(@ModelAttribute User user, Model model) {
+        try {
+            userService.registerUser(user);
+            return "redirect:/users/login?registered";
+        } catch (Exception e) {
+            model.addAttribute("error", "Username already exists");
+            model.addAttribute("user", user);
+            return "register";
+        }
+    }
+    
     @GetMapping("/community")
     public String community(Authentication authentication, Model model) {
         Iterable<User> allUsers = userRepository.findAll();
