@@ -6,6 +6,10 @@ RUN mvn dependency:go-offline -B
 
 COPY src ./src
 
+ENV MAVEN_OPTS="-Dfile.encoding=UTF-8 -Dproject.build.sourceEncoding=UTF-8"
+ENV LANG=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+
 RUN mvn clean package -DskipTests -B
 
 FROM eclipse-temurin:17-jre-alpine
