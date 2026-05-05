@@ -13,9 +13,12 @@
         html[data-theme="dark"] .profile-section label,
         html[data-theme="dark"] .profile-section input,
         html[data-theme="dark"] .profile-section textarea,
-        html[data-theme="dark"] .profile-section p,
-        html[data-theme="dark"] .profile-section .badge {
+        html[data-theme="dark"] .profile-section p {
             color: var(--text-primary);
+        }
+        html[data-theme="dark"] .profile-section .badge {
+            background: var(--primary);
+            color: white;
         }
         html[data-theme="dark"] .profile-card {
             background: var(--bg-secondary);
@@ -163,7 +166,7 @@
                     <p style="color: var(--text-secondary);" th:text="${user.email}">email@example.com</p>
                     <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.5rem;">
                         <span class="badge" style="background:var(--primary); color:white; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.75rem;" th:text="${user.role}">USER</span>
-                        <span style="background:#fef3c7; color:#92400e; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.75rem;">&#9733; <span th:text="${user.reputation}">0</span> reputation</span>
+                        <span style="background:var(--primary); color:white; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.75rem;">&#9733; <span th:text="${user.reputation}">0</span> reputation</span>
                     </div>
                 </div>
             </div>
