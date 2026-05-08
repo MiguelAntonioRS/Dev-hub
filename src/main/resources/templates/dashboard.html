@@ -51,7 +51,7 @@
                 <p th:text="${user.email}">email@example.com</p>
                 <div class="user-badges">
                     <span class="badge" th:text="${user.role}">USER</span>
-                    <span class="badge badge-success">⭐ <span th:text="${user.reputation}">0</span> reputation</span>
+                    <span class="badge" style="background:var(--primary); color:white;">⭐ <span th:text="${user.reputation}">0</span> reputation</span>
                 </div>
             </div>
         </div>
